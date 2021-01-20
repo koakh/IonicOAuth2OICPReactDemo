@@ -8,6 +8,8 @@ import { RouteComponentProps } from 'react-router';
 
 interface LandingPageProps extends RouteComponentProps {}
 
+const IDP = process.env.REACT_APP_AUTH_EXTRA_IDP;
+
 const Landing : React.FC<LandingPageProps> = (props: LandingPageProps) => {
 
     const [action, setAction] = useState(AuthActionBuilder.Default);
@@ -31,14 +33,16 @@ const Landing : React.FC<LandingPageProps> = (props: LandingPageProps) => {
  
     function handleSignIn(e : any) {
         e.preventDefault();
-        Auth.Instance.signIn();
+
+        let authExtra = IDP ? { idp: IDP } : undefined;
+        Auth.Instance.signIn(authExtra);
     }
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Logged Out</IonTitle>
+                    <IonTitle>Ionic AppAuth React Demo (Logged Out)</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent>

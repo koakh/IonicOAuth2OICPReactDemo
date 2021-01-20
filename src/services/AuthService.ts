@@ -7,6 +7,14 @@ import { AxiosRequestor } from './AxiosService';
 
 const { App } = Plugins;
 
+const AUTH_CLIENT_ID: string = process.env.REACT_APP_AUTH_CLIENT_ID || '';
+const AUTH_SERVER_HOST = process.env.REACT_APP_AUTH_SERVER_HOST || '';
+const AUTH_SCOPES = process.env.REACT_APP_AUTH_SCOPES || 'openid profile';
+
+console.log('AUTH_CLIENT_ID: ', AUTH_CLIENT_ID);
+console.log('AUTH_SERVER_HOST: ', AUTH_SERVER_HOST);
+console.log('AUTH_SCOPES: ', AUTH_SCOPES);
+
 export class Auth  {
 
   private static authService : AuthService | undefined;
@@ -14,11 +22,11 @@ export class Auth  {
   private static buildAuthInstance() {
     const authService = new AuthService(new CapacitorBrowser(), new CapacitorSecureStorage(), new AxiosRequestor());
     authService.authConfig = {
-      client_id: 'appauth',
-      server_host: 'http://localhost:5200',
+      client_id: AUTH_CLIENT_ID,
+      server_host: AUTH_SERVER_HOST,
       redirect_url: isPlatform('capacitor') ? 'com.appauth.demo://callback' : window.location.origin + '/loginredirect',
       end_session_redirect_url: isPlatform('capacitor') ?  'com.appauth.demo://endSession' : window.location.origin + '/endredirect',
-      scopes: 'openid offline_access',
+      scopes: AUTH_SCOPES,
       pkce: true
     }
 
@@ -28,7 +36,8 @@ export class Auth  {
         console.log(data.url);
         console.log(authService.authConfig.redirect_url);
         if (data.url !== undefined) {
-          authService.handleCallback(data.url);
+          // authService.handleCallback(data.url);
+          authService.authorizationCallback(data.url);
         }
       });
     }
