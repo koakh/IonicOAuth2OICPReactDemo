@@ -6,51 +6,53 @@ import { Auth } from '../services/AuthService';
 import { AuthActions, AuthActionBuilder, AuthObserver } from 'ionic-appauth';
 import { RouteComponentProps } from 'react-router';
 
-interface LandingPageProps extends RouteComponentProps {}
+interface LandingPageProps extends RouteComponentProps { }
 
 const IDP = process.env.REACT_APP_AUTH_EXTRA_IDP;
+const AUTH_SERVER_HOST = process.env.REACT_APP_AUTH_SERVER_HOST || '';
 
-const Landing : React.FC<LandingPageProps> = (props: LandingPageProps) => {
+const Landing: React.FC<LandingPageProps> = (props: LandingPageProps) => {
 
-    const [action, setAction] = useState(AuthActionBuilder.Default);
-    
-    let observer: AuthObserver;
+  const [action, setAction] = useState(AuthActionBuilder.Default);
 
-    useIonViewWillEnter(() => {
-        Auth.Instance.loadTokenFromStorage();
-        observer = Auth.Instance.addActionListener((action) => {
-            setAction(action)
-            if(action.action === AuthActions.SignInSuccess || 
-                action.action === AuthActions.LoadTokenFromStorageSuccess){
-              props.history.replace('home');
-            }
-        });
+  let observer: AuthObserver;
+
+  useIonViewWillEnter(() => {
+    Auth.Instance.loadTokenFromStorage();
+    observer = Auth.Instance.addActionListener((action) => {
+      setAction(action)
+      if (action.action === AuthActions.SignInSuccess ||
+        action.action === AuthActions.LoadTokenFromStorageSuccess) {
+        props.history.replace('home');
+      }
     });
+  });
 
-    useIonViewDidLeave(() => {
-        Auth.Instance.removeActionObserver(observer);
-    });
- 
-    function handleSignIn(e : any) {
-        e.preventDefault();
+  useIonViewDidLeave(() => {
+    Auth.Instance.removeActionObserver(observer);
+  });
 
-        let authExtra = IDP ? { idp: IDP } : undefined;
-        Auth.Instance.signIn(authExtra);
-    }
+  function handleSignIn(e: any) {
+    e.preventDefault();
 
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Ionic AppAuth React Demo (Logged Out)</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent>
-                <IonButton onClick={handleSignIn}>Sign In</IonButton>
-                <ActionCard action={action}></ActionCard>
-            </IonContent>
-        </IonPage>
-    ); 
+    let authExtra = IDP ? { idp: IDP } : undefined;
+    Auth.Instance.signIn(authExtra);
+  }
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          {/* <IonTitle>Ionic AppAuth React Demo (Logged Out): {AUTH_SERVER_HOST}</IonTitle> */}
+          <IonTitle>{AUTH_SERVER_HOST} (Logged Out)</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonButton onClick={handleSignIn}>Sign In</IonButton>
+        <ActionCard action={action}></ActionCard>
+      </IonContent>
+    </IonPage>
+  );
 };
 
 export default Landing;

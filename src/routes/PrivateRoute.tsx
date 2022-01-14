@@ -5,14 +5,14 @@ import { Route, Redirect } from "react-router-dom";
 
 import { Auth } from "../services/AuthService";
 
-export const PrivateRoute = ({ component, ...rest } : any) => {
+export const PrivateRoute = ({ component, ...rest }: any) => {
 
-    function renderFn(props: any) {
-        if (Auth.Instance.session.isAuthenticated) {
-            return React.createElement(component, props);
-        }
-        return <Redirect to="/landing" />
+  function renderFn(props: any) {
+    if (Auth.Instance.session.isAuthenticated) {
+      return React.createElement(component, props);
     }
+    return <Redirect to="/landing" />
+  }
 
-    return <Route {...rest} render={renderFn} />;
+  return <Route {...rest} render={renderFn} />;
 };

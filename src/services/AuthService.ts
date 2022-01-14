@@ -15,9 +15,9 @@ console.log('AUTH_CLIENT_ID: ', AUTH_CLIENT_ID);
 console.log('AUTH_SERVER_HOST: ', AUTH_SERVER_HOST);
 console.log('AUTH_SCOPES: ', AUTH_SCOPES);
 
-export class Auth  {
+export class Auth {
 
-  private static authService : AuthService | undefined;
+  private static authService: AuthService | undefined;
 
   private static buildAuthInstance() {
     const authService = new AuthService(new CapacitorBrowser(), new CapacitorSecureStorage(), new AxiosRequestor());
@@ -25,7 +25,7 @@ export class Auth  {
       client_id: AUTH_CLIENT_ID,
       server_host: AUTH_SERVER_HOST,
       redirect_url: isPlatform('capacitor') ? 'com.appauth.demo://callback' : window.location.origin + '/loginredirect',
-      end_session_redirect_url: isPlatform('capacitor') ?  'com.appauth.demo://endSession' : window.location.origin + '/endredirect',
+      end_session_redirect_url: isPlatform('capacitor') ? 'com.appauth.demo://endSession' : window.location.origin + '/endredirect',
       scopes: AUTH_SCOPES,
       pkce: true
     }
@@ -46,7 +46,7 @@ export class Auth  {
     return authService;
   }
 
-  public static get Instance() : AuthService {
+  public static get Instance(): AuthService {
     if (!this.authService) {
       this.authService = this.buildAuthInstance();
     }

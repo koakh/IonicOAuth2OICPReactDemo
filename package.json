@@ -2,6 +2,19 @@
   "name": "ionic-appauth-react-demo",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "//--start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "start": "HOST=localhost ionic serve",
+    "android-build": "ionic capacitor build android",
+    "android-copy": "ionic capacitor copy android",
+    "android-open": "ionic capacitor open android",
+    "ios-build": "ionic capacitor build ios",
+    "ios-open": "ionic capacitor open ios",
+    "ios-copy": "ionic capacitor copy ios"
+  },
   "dependencies": {
     "@capacitor/android": "^2.4.0",
     "@capacitor/core": "2.4.0",
@@ -27,12 +40,6 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.3",
     "typescript": "3.8.3"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
