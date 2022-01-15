@@ -1,7 +1,17 @@
 # HYDRA
 
+## TLDR
+
+just use the demo at <https://kuartzo.com:810>
+
+## Notes
+
 - used a ubuntu 20.04 bare metal or virtual machine, you choose, with fireall or disaabled or open ports `444/tcp`, `445/tcp`, `300/tcp`, `810/tcp`
 - used a domain in this case `kuartzo.com` to override https/tls certificates, in this case we use let's encrypt to generate our certificates in caddy revere proxy
+
+## TODO:
+
+- ionic web docker image?
 
 ## Links
 
@@ -19,7 +29,12 @@
 - consent: https://kuartzo.com:300/consent
 - login: https://kuartzo.com:300/login
 - logout: https://kuartzo.com:300/logout
-- client: https://kuartzo.com:810
+- ionic/capacitor client: https://kuartzo.com:555
+- ionic/capacitor client: https://kuartzo.com:810
+
+> bellow ports are reverse proxied behind caddy
+
+`444 > 4444`, `445 > 4445`, `555 > 5555`, `300 > 3000`, `810 > 8100`
 
 ## Pre-Requisites
 
@@ -28,6 +43,13 @@
 $ sudo apt install golang-go jq -y
 # install ionic cli
 $ npm install -g @ionic/cli
+```
+
+## Prevent firewall problems
+
+```shell
+# disable firewall to pevent connection problems until everything s working
+$ sudo ufw disable
 ```
 
 ## Spin up Ory Hydra Server
@@ -267,6 +289,119 @@ $ curl -s -X GET http://localhost:4445/clients/oauth-pkce | jq
 }
 ```
 
+#### Configure Caddy
+
+before start app we must configure caddy reverse proxy to prevent problems with https/tls and remote connections
+for me the solution for all of this non localhost deployment problems is jump into production mode
+
+- [Install - Caddy Documentation](https://caddyserver.com/docs/install#debian-ubuntu-raspbian)
+
+```shell
+$ sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+$ curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
+$ curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+$ sudo apt update
+$ sudo apt install caddy
+```
+
+create a config file
+
+```shell
+$ sudo nano /etc/caddy/Caddyfile
+```
+
+```caddy
+# client app
+kuartzo.com:810 {
+  reverse_proxy * 127.0.0.1:8100
+}
+
+# hydra
+kuartzo.com:444 {  
+  reverse_proxy * 127.0.0.1:4444
+}
+
+# hydra
+kuartzo.com:445 {
+  reverse_proxy * 127.0.0.1:4445
+}
+
+# hydra
+kuartzo.com:555 {
+  reverse_proxy * 127.0.0.1:5555
+}
+
+# hydra consent
+kuartzo.com:300 {
+  reverse_proxy * 127.0.0.1:3000
+}
+```
+
+test launch caddy
+
+```shell
+$ sudo /usr/bin/caddy run --environ --config /etc/caddy/Caddyfile
+```
+
+test reverse proxy for ex in browser with <https://kuartzo.com:444/>
+
+will see `{"error": "Error 404 - The requested route does not exist. Make sure you are using the right path, domain, and port."}`
+
+ctrl+c to exit if everything work as expected and create a system service | optional
+
+```shell
+$ sudo nano /lib/systemd/system/caddy.service
+```
+
+```
+# caddy.service
+#
+# For using Caddy with a config file.
+#
+# Make sure the ExecStart and ExecReload commands are correct
+# for your installation.
+#
+# See https://caddyserver.com/docs/install for instructions.
+#
+# WARNING: This service does not use the --resume flag, so if you
+# use the API to make changes, they will be overwritten by the
+# Caddyfile next time the service is restarted. If you intend to
+# use Caddy's API to configure it, add the --resume flag to the
+# `caddy run` command or use the caddy-api.service file instead.
+
+[Unit]
+Description=Caddy
+Documentation=https://caddyserver.com/docs/
+After=network.target network-online.target
+Requires=network-online.target
+
+[Service]
+Type=notify
+User=caddy
+Group=caddy
+ExecStart=/usr/bin/caddy run --environ --config /etc/caddy/Caddyfile
+ExecReload=/usr/bin/caddy reload --config /etc/caddy/Caddyfile
+TimeoutStopSec=5s
+LimitNOFILE=1048576
+LimitNPROC=512
+PrivateTmp=true
+ProtectSystem=full
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```shell
+# if want to enable service at boot, and start launch
+$ sudo systemctl enable --now caddy
+# else if just want to start stop service launch
+$ sudo systemctl start caddy
+$ sudo systemctl status caddy
+# stop with
+$ sudo systemctl start caddy
+```
+
 #### Configure OAUth2+PKCE Ionic/Capacitor Client App
 
 ```shell
@@ -274,20 +409,47 @@ $ mkdir ${USER}/Development/@OAuth2 -p
 $ cd ${USER}/Development/@OAuth2
 # clone hydra repo
 $ git clone https://github.com/koakh/IonicOAuth2OICPReactDemo.git
-$ mv hydra OryHydra5MinTutorial
-# change into the directory with the hydra source code
-$ cd OryHydra5MinTutorial
+# change into the directory
+$ cd IonicOAuth2OICPReactDemo
+# check used versions
+$ node -v
+v14.17.5
+$ npm -v
+8.3.1
+$ ionic -v
+6.18.1
+
+# install dependecies
+$ npm i
 ```
 
-
-#### Starts a client server that serves an example web application
-
+#### Starts a OAUth2+PKCE Ionic/Capacitor
 
 
+```shell
+# launch ionic/capacitor web page
+$ ionic serve
+```
 
+now start oauth flow at <https://kuartzo.com:810>, you should have a full flow without problems
 
+#### Deploy Capacitor App on Android
 
-## Open Firewall
+```shell
+$ ionic capacitor build android
+```
+
+> when android studio opens just deploy app on emulator or real device
+#### Deploy Capacitor App on IOS
+
+```shell
+$ ionic capacitor build ios
+```
+
+> when xcode opens just deploy app on emulator or real device
+## Configure Open Firewall
+
+after everything works we can enable firewall again, but first let configure a appliction to open services
 
 ```shell
 # create application
@@ -298,7 +460,7 @@ $ sudo nano /etc/ufw/applications.d/oauth-demo
 [OAuth2Demo]
 title=OAuth2 Hydra Demo
 description=OAuth2 Hydra Demo
-ports=444/tcp|445/tcp|810/tcp|300/tcp
+ports=444/tcp|445/tcp|555/tcp|810/tcp|300/tcp
 ```
 
 ```shell
@@ -306,60 +468,17 @@ ports=444/tcp|445/tcp|810/tcp|300/tcp
 $ sudo ufw allow OAuth2Demo
 Rules updated
 Rules updated (v6)
+
+# enable firewall
+$ sudo ufw enable
+$ sudo ufw status
+Status: active
+
+To                         Action      From
+--                         ------      ----
+OAuth2Demo                 ALLOW       Anywhere
+OAuth2Demo (v6)            ALLOW       Anywhere (v6)
 ```
-
-
-
-
-
-
-
-
-
-
-
-FAILS ON
-
-https://kuartzo.com:4444/oauth2/auth?audience=&client_id=my-client&max_age=0&nonce=naduvestwgytiggbcyafchrs&prompt=&redirect_uri=http%3A%2F%2F127.0.0.1%3A5555%2Fcallback&response_type=code&scope=openid+offline&state=gbyxpqohsossapecwfigvtcq
-
-redirect_uri=127.0.0.1:5555
-
-## Ionic client
-
-```shell
-$ ionic serve
-[react-scripts] ℹ ｢wds｣: Project is running at http://0.0.0.0:8100
-```
-
-
-
-prevent problem accept token because of http
-
-
-Object { action: "Sign In Failed", error: "The+request+is+missing+a+required+parameter,+includes+an+invalid+parameter+value,+includes+a+parameter+more+than+once,+or+is+otherwise+malformed.+Redirect+URL+is+using+an+insecure+protocol,+http+is+only+allowed+for+hosts+with+suffix+`localhost`,+for+example:+http://myapp.localhost/." }
-
-
-authclient.kuartzo.com {
-  reverse_proxy * 127.0.0.1:8100
-}
-
-5.189.139.86    app.kuartzo.com
-
-
-
-
-
-
-secure all 
-https://app.kuartzo.com
-https://kuartzo.com:444
-https://kuartzo.com:445
-
-
-start here https://kuartzo.com:810
-
-changes in caddy
-and hydra.yml
 
 
 
@@ -373,35 +492,6 @@ example.com {
 }
 And Caddy will run a 301 Redirect listening on HTTP and serve the actual site on HTTPS.
 
-
-
-
-
-```caddy
-# client app
-kuartzo.com:810 {
-        reverse_proxy * 127.0.0.1:8100
-}
-
-# hydra
-kuartzo.com:444 {
-        reverse_proxy * 127.0.0.1:4444  
-}
-
-# hydra
-kuartzo.com:445 {
-        reverse_proxy * 127.0.0.1:4445
-}
-
-# hydra consent
-kuartzo.com:300 {
-        reverse_proxy * 127.0.0.1:3000
-}
-```
-
-sudo service caddy stop
-sudo /usr/bin/caddy run --environ --config /etc/caddy/Caddyfile
-sudo service caddy start
 
 
 
