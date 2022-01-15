@@ -9,9 +9,11 @@
     "eject": "react-scripts eject",
     "start": "HOST=localhost ionic serve",
     "android-build": "ionic capacitor build android",
+    "android-debug": "HOST=localhost ionic capacitor run android --livereload --consolelogs --serverlogs",
     "android-copy": "ionic capacitor copy android",
     "android-open": "ionic capacitor open android",
     "ios-build": "ionic capacitor build ios",
+    "ios-debug": "ionic capacitor run ios --livereload --consolelogs --serverlogs",
     "ios-open": "ionic capacitor open ios",
     "ios-copy": "ionic capacitor copy ios"
   },

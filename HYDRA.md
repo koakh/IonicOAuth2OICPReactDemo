@@ -261,7 +261,7 @@ $ curl -s -X GET http://localhost:4445/clients/my-client | jq
 $ docker-compose -f quickstart.yml exec hydra \
 	hydra clients create \
 	--endpoint https://kuartzo.com:445 \
-	--id oauth-pkce5 \
+	--id oauth-pkce6 \
   --token-endpoint-auth-method none \
 	--grant-types authorization_code,refresh_token \
 	--response-types code,id_token \
@@ -272,6 +272,8 @@ $ docker-compose -f quickstart.yml exec hydra \
 # outcome
 OAuth 2.0 Client ID: oauth-pkce
 This OAuth 2.0 Client has no secret
+
+> note: required `com.appauth.demo://endSession` in `--callbacks`
 
 # check client
 $ curl -s -X GET http://localhost:4445/clients/oauth-pkce | jq
@@ -329,7 +331,7 @@ $ docker-compose \
 	--scope openid,offline
 ```
 
-now navigae to <https://kuartzo.com:5555/> and start authorization flow with **Authorize application**
+now navigate to <https://kuartzo.com:5555/> and start authorization flow with **Authorize application**
 
 FAILS ON
 
@@ -415,3 +417,30 @@ kuartzo.com:300 {
 sudo service caddy stop
 sudo /usr/bin/caddy run --environ --config /etc/caddy/Caddyfile
 sudo service caddy start
+
+
+
+
+- [ionic: where to see the displayed console log](https://stackoverflow.com/questions/49316634/ionic-where-to-see-the-displayed-console-log)
+native debug
+ionic cordova run android
+[ERROR] native-run was not found on your PATH. Please install it globally:
+        
+        npm i -g native-run
+ionic capacitor run android        
+
+
+
+output client and all configs
+always check android cleint oauth-pkce5 that match with woring version of web
+
+
+
+src/main/assets/capacitor.config.json
+	"server": {
+		"url": "http://localhost:8100"
+	}
+}
+
+must add to cors
+
