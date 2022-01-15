@@ -10,8 +10,5 @@
 		}
 	},
 	"cordova": {},
-	"linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh",
-	"server": {
-		"url": "http://localhost:8100"
-	}
+	"linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh"
 }
