@@ -11,17 +11,25 @@ just use the demo at <https://kuartzo.com:810>
 
 ## TODO:
 
-- ionic web docker image?
+- [ ] finish notes
+- [ ] debug ionic app / real device
+- [ ] flutter app
+- [ ] keycloak with hydra oauth client and 3 IDP's google, github, kuartzo
+- [ ] combine all repos hydra, ionic and flutter
+- [ ] create a simple api and request it's protected endpoints, maybe a nestjs with a guard that use hydra introspection endpoint to validate the token
 
 ## Links
 
 ### Ory Hydra
 
 - [Introduction | Ory Hydra](https://www.ory.sh/hydra/docs/)
+- [Setting up Cross-origin resource sharing (CORS) | Ory Hydra](https://www.ory.sh/hydra/docs/guides/cors/)
+- [Hydra Slack](https://app.slack.com/client/T010GP8ELBT/C012RBW0F18)
 
 ### Ionic/Capacitor
 
 - [Installing Ionic | Ionic Documentation](https://ionicframework.com/docs/intro/cli)
+- [Project was based on Awesome Repo](https://github.com/creasoft-dev/ionic-appauth-react-demo.git)
 
 ## Network Addresses
 
@@ -580,3 +588,7 @@ The public port can and should be exposed to public internet traffic. That port 
 - /oauth2/sessions/logout
 - /userinfo
 
+
+
+
+chrome://inspect/#devices
