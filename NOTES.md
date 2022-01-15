@@ -1,5 +1,9 @@
 # IonicAppauthReactDemo NOTES
 
+## Source Repo
+
+- [ionic-appauth-react-demo.git](https://github.com/creasoft-dev/ionic-appauth-react-demo.git)
+
 ## Run
 
 ```shell
