@@ -112,8 +112,10 @@ serve:
       allowed_origins:
         # web client
         - https://kuartzo.com:810
-        # capacitor mobile client
+        # capacitor mobile client ionic5
         - http://localhost:8100
+        # capacitor mobile client ionic6
+        - http://localhost
       allowed_methods:
         - POST
         - GET
@@ -518,7 +520,7 @@ output client and all configs
 always check android cleint oauth-pkce5 that match with woring version of web
 
 
-
+this will be replaces with root capacitor.config.json
 src/main/assets/capacitor.config.json
 	"server": {
 		"url": "http://localhost:8100"
@@ -527,6 +529,11 @@ src/main/assets/capacitor.config.json
 
 must add to cors
 
+hydra_1          | time=2022-01-17T23:13:55Z level=info msg=completed handling request http_request=map[headers:map[accept:application/json, text/plain, */* accept-encoding:gzip, deflate acc
+ept-language:en-US,en;q=0.9 origin:http://localhost referer:http://localhost
+
+IONIC6 changes from 
+origin:http://localhost
 
 
 
@@ -592,3 +599,6 @@ The public port can and should be exposed to public internet traffic. That port 
 
 
 chrome://inspect/#devices
+
+
+https://ionicframework.com/docs/intro/upgrading-to-ionic-6

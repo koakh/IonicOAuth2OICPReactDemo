@@ -1,0 +1,59 @@
+serve:
+  cookies:
+    same_site_mode: Lax
+
+urls:
+  self:
+    issuer: https://kuartzo.com:444
+  consent: https://kuartzo.com:300/consent
+  login: https://kuartzo.com:300/login
+  logout: https://kuartzo.com:300/logout
+
+secrets:
+  system:
+    - youReallyNeedToChangeThis
+
+oidc:
+  subject_identifiers:
+    supported_types:
+      - pairwise
+      - public
+    pairwise:
+      salt: youReallyNeedToChangeThis
+
+serve:
+  # admin:
+  #   cors:
+  #     enabled: true
+  #     allowed_origins:
+  #       - https://kuartzo.com:8100
+  #     allowed_methods:
+  #       - POST
+  #       - GET
+  #       - PUT
+  #       - PATCH
+  #       - DELETE
+  #     allowed_headers:
+  #       - Authorization
+  #     exposed_headers:
+  #       - Content-Type
+  public:
+    cors:
+      enabled: true
+      allowed_origins:
+        # web client
+        - https://kuartzo.com:810
+        # capacitor mobile client ionic5
+        - http://localhost:8100
+        # capacitor mobile client ionic6
+        - http://localhost
+      allowed_methods:
+        - POST
+        - GET
+        - PUT
+        - PATCH
+        - DELETE
+      allowed_headers:
+        - Authorization
+      exposed_headers:
+        - Content-Type
