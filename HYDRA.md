@@ -51,6 +51,9 @@ just use the demo at <https://kuartzo.com:810>
 $ sudo apt install golang-go jq -y
 # install ionic cli
 $ npm install -g @ionic/cli
+# in the root of your app, install Capacitor:
+# npm install @capacitor/core
+$ npm install @capacitor/cli@^2.4.0 @capacitor/ios@^2.4.0 @capacitor/android@^2.4.0 --save-dev
 ```
 
 ## Prevent firewall problems
@@ -446,14 +449,20 @@ now start oauth flow at <https://kuartzo.com:810>, you should have a full flow w
 #### Deploy Capacitor App on Android
 
 ```shell
+$ npx cap add android
 $ ionic capacitor build android
+# or
+$ npm run npm run ios-android
 ```
 
 > when android studio opens just deploy app on emulator or real device
 #### Deploy Capacitor App on IOS
 
 ```shell
+$ npx cap add ios
 $ ionic capacitor build ios
+# or
+$ npm run npm run ios-build
 ```
 
 > when xcode opens just deploy app on emulator or real device
