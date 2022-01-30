@@ -254,9 +254,11 @@ $ docker-compose -f quickstart.yml exec hydra \
 # outcome
 OAuth 2.0 Client ID: oauth-pkce
 This OAuth 2.0 Client has no secret
+```
 
 > note: required `com.appauth.demo://endSession` in `--callbacks`
 
+```shell
 # check client
 $ curl -s -X GET http://localhost:4445/clients/oauth-pkce | jq
 # outcome
@@ -300,6 +302,29 @@ $ curl -s -X GET http://localhost:4445/clients/oauth-pkce | jq
   ],
   "metadata": {}
 }
+```
+
+flutter client
+
+```shell
+# create client spa+mobile oath+pkce12
+$ docker-compose -f quickstart.yml exec hydra \
+	hydra clients create \
+	--endpoint https://kuartzo.com:445 \
+	--id oauth-pkce-flutter \
+  --token-endpoint-auth-method none \
+	--grant-types authorization_code,refresh_token \
+	--response-types code,id_token \
+	--scope openid,profile,email,offline_access \
+	--callbacks com.auth0.flutterdemo://login-callback \
+  --post-logout-callbacks com.auth0.flutterdemo://login-callback
+# outcome
+OAuth 2.0 Client ID: oauth-pkce-flutter
+This OAuth 2.0 Client has no secret
+
+# check client
+$ curl -s -X GET http://localhost:4445/clients/oauth-pkce-flutter | jq
+# outcome
 ```
 
 #### Configure Caddy
