@@ -13,7 +13,7 @@ const AUTH_SERVER_HOST = process.env.REACT_APP_AUTH_SERVER_HOST || '';
 
 const Landing: React.FC<LandingPageProps> = (props: LandingPageProps) => {
 
-  const [action, setAction] = useState(AuthActionBuilder.Default);
+  const [action, setAction] = useState(AuthActionBuilder.Init);
 
   let observer: AuthObserver;
 

@@ -10,7 +10,7 @@ interface HomePageProps extends RouteComponentProps { }
 
 const Home: React.FC<HomePageProps> = (props: HomePageProps) => {
 
-  const [action, setAction] = useState(AuthActionBuilder.Default);
+  const [action, setAction] = useState(AuthActionBuilder.Init);
   const [user, setUser] = useState();
   let observer: AuthObserver;
 

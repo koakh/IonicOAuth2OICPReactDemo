@@ -471,6 +471,8 @@ $ ionic serve
 
 now start oauth flow at <https://kuartzo.com:810>, you should have a full flow without problems
 
+> WARNING must use <https://kuartzo.com:810> else we have problems with redirect_url etc
+
 #### Deploy Capacitor App on Android
 
 ```shell

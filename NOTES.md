@@ -51,4 +51,4 @@ REACT_APP_AUTH_SCOPES="openid profile email offline_access"
 REACT_APP_AUTH_EXTRA_IDP="0oa3gq27xnkurdkQm5d7"
 ```
 
-the trick to get refreshTokens working on okta is using request `offline_access` scope to
+the trick to get refreshTokens working on okta is using request `offline_access` scope to....???

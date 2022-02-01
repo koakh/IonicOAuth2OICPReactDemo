@@ -1,11 +1,9 @@
 import { isPlatform } from '@ionic/react';
-import { Plugins } from '@capacitor/core';
+import { App } from '@capacitor/app';
 import { ConsoleLogObserver, AuthService } from 'ionic-appauth';
 import { CapacitorBrowser, CapacitorSecureStorage } from 'ionic-appauth/lib/capacitor';
 
 import { AxiosRequestor } from './AxiosService';
-
-const { App } = Plugins;
 
 const AUTH_CLIENT_ID: string = process.env.REACT_APP_AUTH_CLIENT_ID || '';
 const AUTH_SERVER_HOST = process.env.REACT_APP_AUTH_SERVER_HOST || '';
@@ -27,22 +25,21 @@ export class Auth {
       redirect_url: isPlatform('capacitor') ? 'com.appauth.demo://callback' : window.location.origin + '/loginredirect',
       end_session_redirect_url: isPlatform('capacitor') ? 'com.appauth.demo://endSession' : window.location.origin + '/endredirect',
       scopes: AUTH_SCOPES,
-      pkce: true
+      pkce: true,
     }
 
     if (isPlatform('capacitor')) {
       console.log("applistenercreated");
       App.addListener('appUrlOpen', (data: any) => {
-        console.log(data.url);
-        console.log(authService.authConfig.redirect_url);
-        if (data.url !== undefined) {
-          // authService.handleCallback(data.url);
+        if ((data.url).indexOf(authService.authConfig.redirect_url) === 0) {
           authService.authorizationCallback(data.url);
+        }else{
+            authService.endSessionCallback();
         }
       });
     }
-
-    authService.addActionObserver(new ConsoleLogObserver());
+    
+    authService.init();
     return authService;
   }
 
