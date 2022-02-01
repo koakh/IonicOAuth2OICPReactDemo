@@ -14,8 +14,9 @@
     "android-debug": "HOST=localhost ionic capacitor run android --livereload --consolelogs --serverlogs",
     "android-copy": "ionic capacitor copy android",
     "android-open": "ionic capacitor open android",
-    "ios-build": "HOST=localhost ionic capacitor build ios --livereload --consolelogs --serverlogs",
-    "//--ios-debug": "HOST=localhost ionic capacitor run ios --livereload --consolelogs --serverlogs",
+    "//--FAILS ios-build": "HOST=localhost ionic capacitor build ios --livereload --consolelogs --serverlogs",
+    "//--works": "HOST=localhost ionic capacitor build ios --livereload --consolelogs --serverlogs",
+    "ios-debug": "HOST=localhost ionic capacitor run ios --livereload --consolelogs --serverlogs",
     "ios-open": "ionic capacitor open ios",
     "ios-copy": "ionic capacitor copy ios"
   },

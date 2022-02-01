@@ -59,9 +59,27 @@ the trick to get refreshTokens working on okta is using request `offline_access`
 
 ## Ios Trick is Using
 
+when use ios when click sign in it does nothing 
+but we use this line it works
+
+"ios-debug": "HOST=localhost ionic capacitor run ios --livereload --consolelogs --serverlogs",
+
+if we use 
+"ios-build": "HOST=localhost ionic capacitor build ios --livereload --consolelogs --serverlogs"
+will not work
+
 `info.plist`
 
+rm ios
+npx cap add ios
+
+now add or replace to top of file
+
 ```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -75,4 +93,8 @@ the trick to get refreshTokens working on okta is using request `offline_access`
 			</array>
 		</dict>
 	</array>
+	...
 ```
+
+# the one that work
+npm run ios-debug
