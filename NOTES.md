@@ -73,6 +73,16 @@ when use ios when click sign in it does nothing, but we use this line it works
 if we use 
 `"ios-build": "HOST=localhost ionic capacitor build ios --livereload --consolelogs --serverlogs"` it will not work, fuck so many time debug and it's a stupid run / build annoying thing, how cares, move on :)
 
+seems that build not use HOST env variable, and required xcode click build, run is better because it works and it will build and run ate same time
+
+and we see in generated ios/App/App/capacitor.config.json
+
+	"server": {
+		"url": "http://localhost:8100"
+	}
+}
+
+
 ```shell
 $ rm -R ios
 $ npx cap add ios
