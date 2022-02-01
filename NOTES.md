@@ -2,7 +2,12 @@
 
 ## TLDR
 
-https://kuartzo.com:810
+```shell
+$ ionic server
+```
+
+now open `https://kuartzo.com:810`
+
 
 ## Source Repo
 
@@ -57,23 +62,20 @@ REACT_APP_AUTH_EXTRA_IDP="0oa3gq27xnkurdkQm5d7"
 
 the trick to get refreshTokens working on okta is using request `offline_access` scope to....???
 
-## Ios Trick is Using
+## Ios Trick is Using `ionic capacitor run ios`
 
-when use ios when click sign in it does nothing 
-but we use this line it works
+when use ios when click sign in it does nothing, but we use this line it works
 
-"ios-debug": "HOST=localhost ionic capacitor run ios --livereload --consolelogs --serverlogs",
-
+`"ios-debug": "HOST=localhost ionic capacitor run ios --livereload --consolelogs --serverlogs"`
 if we use 
-"ios-build": "HOST=localhost ionic capacitor build ios --livereload --consolelogs --serverlogs"
-will not work
+`"ios-build": "HOST=localhost ionic capacitor build ios --livereload --consolelogs --serverlogs"` it will not work, fuck so many time debug and it's a stupid run / build annoying thing, how cares, move on :)
 
-`info.plist`
+```shell
+$ rm -R ios
+$ npx cap add ios
+```
 
-rm ios
-npx cap add ios
-
-now add or replace to top of file
+now `URLSchemes` to `info.plist`, can add top of file, to be visible
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -96,5 +98,7 @@ now add or replace to top of file
 	...
 ```
 
+```shell
 # the one that work
-npm run ios-debug
+$ npm run ios-debug
+```
