@@ -1,5 +1,9 @@
 # IonicAppauthReactDemo NOTES
 
+## TLDR
+
+https://kuartzo.com:810
+
 ## Source Repo
 
 - [ionic-appauth-react-demo.git](https://github.com/creasoft-dev/ionic-appauth-react-demo.git)
@@ -52,3 +56,23 @@ REACT_APP_AUTH_EXTRA_IDP="0oa3gq27xnkurdkQm5d7"
 ```
 
 the trick to get refreshTokens working on okta is using request `offline_access` scope to....???
+
+## Ios Trick is Using
+
+`info.plist`
+
+```xml
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<!--<string>com.getcapacitor.capacitor</string>-->
+			<string>com.appauth.demo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<!--<string>capacitor</string>-->
+				<string>com.appauth.demo</string>
+			</array>
+		</dict>
+	</array>
+```
