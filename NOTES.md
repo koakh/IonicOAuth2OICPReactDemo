@@ -64,6 +64,9 @@ the trick to get refreshTokens working on okta is using request `offline_access`
 
 ## Ios Trick is Using `ionic capacitor run ios`
 
+https://github.com/google/GTMAppAuth/issues/31
+https://github.com/FormidableLabs/react-native-app-auth/pull/659
+
 when use ios when click sign in it does nothing, but we use this line it works
 
 `"ios-debug": "HOST=localhost ionic capacitor run ios --livereload --consolelogs --serverlogs"`
